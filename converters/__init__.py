@@ -4,8 +4,6 @@ import re
 import os
 import subprocess
 
-import sublime
-
 __all__ = ('all', 'CSSConverter', 'SCSSConverter', 'SASSConverter', 'StylusConverter')
 
 

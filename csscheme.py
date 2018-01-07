@@ -1,6 +1,3 @@
-import sys
-sys.modules["sublime"] = __import__("mock_sublime")
-
 import converters
 from converters import tmtheme
 from tinycsscheme import parser, dumper
@@ -22,7 +19,8 @@ def main():
 
 
 def validate_extensions(tmtheme, csscheme):
-    return csscheme.endswith(tuple("." + c.ext for c in converters.all)) and tmtheme.lower().endswith(".tmtheme")
+    return (csscheme.endswith(tuple("." + c.ext for c in converters.all))
+            and tmtheme.lower().endswith(".tmtheme"))
 
 
 def convert_tmtheme_to_csscheme(input_file, output_file, skip_names=False):
@@ -40,16 +38,15 @@ def convert_tmtheme_to_csscheme(input_file, output_file, skip_names=False):
         f.write(csscheme)
 
 
-
 def convert_csscheme_to_tmtheme(input_file, output_file):
     # determine the converter to use
     possible_converters = [c for c in converters.all if c.valid_file(input_file)]
     if len(possible_converters) > 1:
-        error("found multiple possible converters")
+        error("Found multiple possible converters")
         return
     if len(possible_converters) == 0:
-        known_extensions = ["." + c.ext for c in converters.all]
-        error(f"no converters found for this file extension. Known extensions are {known_extensions}")
+        exts = ["." + c.ext for c in converters.all]
+        error("No converters found for this file extension. Known extensions are " + str(exts))
         return
 
     converter = possible_converters[0]
@@ -69,7 +66,6 @@ def convert_csscheme_to_tmtheme(input_file, output_file):
         dumper.dump_stylesheet_file(output_file, stylesheet)
     except dumper.DumpError as ex:
         converter.report_dump_error(out, input_file, output, ex)
-
 
 
 class MockSublimeOutputPanel:
