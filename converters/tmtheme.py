@@ -23,8 +23,6 @@ def load(text, path, out):
     """
     dirname = os.path.dirname(path)
     out.set_path(dirname, file_regex)
-    if text.startswith('<?xml version="1.0" encoding="UTF-8"?>'):
-        text = text[38:]
 
     try:
         from xml.parsers.expat import ExpatError, ErrorString
