@@ -111,7 +111,11 @@ def to_csscheme(data, out, skip_names, hidden=False):
                 out.write_line("Missing 'settings' key in item")
                 return
             for key, value in item['settings'].items():
-                stream.write("\n\t%s: %s;" % (key, value))
+                # translate an empty fontStyle into fontStyle: none
+                if (key == "fontStyle" and value == ""):
+                    stream.write("\n\tfontStyle: none;")
+                else:
+                    stream.write("\n\t%s: %s;" % (key, value))
 
             stream.write("\n}")
 
